@@ -1,22 +1,21 @@
 #!/usr/bin/env bash
-version="3.11"
 name="grep"
-depends="glibc,libpcre2"
+version="3.11"
 description="GNU regular expression matcher"
 source="https://ftp.gnu.org/gnu/grep/grep-$version.tar.xz"
-groups="sys.apps"
-setup()
-{
-	../${name}-${version}/configure --prefix=/usr \
+depends="libpcre2"
+group="sys.apps"
+
+setup(){
+    $SOURCEDIR/configure --prefix=/usr \
         --libdir=/usr/lib64/
 }
-build()
-{
-	make 
-}
-package()
-{
-	make install DESTDIR=$DESTDIR
+
+build(){
+    make
 }
 
+package(){
+    make install DESTDIR=$DESTDIR
+}
 

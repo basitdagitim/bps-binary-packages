@@ -1,22 +1,19 @@
 #!/usr/bin/env bash
-version='2.3.1'
 name="acl"
-depends="glibc"
-description=" kütüphanesi"
-source="https://download.savannah.nongnu.org/releases/acl/${name}-${version}.tar.xz"
-groups="sys.apps"
-setup()
-{
-	../${name}-${version}/configure --prefix=/ --libdir=/lib
-	
+version="2.3.1"
+description="The acl package contains utilities to administer Access Control Lists"
+source="https://download.savannah.nongnu.org/releases/acl/acl-$version.tar.xz"
+depends="attr"
+group="sys.apps"
+
+setup(){
+    $SOURCEDIR/configure --prefix=/usr \
+        --libdir=/usr/lib64
 }
-build()
-{
-	make 
-}
-package()
-{
-	make install DESTDIR=$DESTDIR
+build(){
+    make
 }
 
-
+package(){
+    make install DESTDIR=$DESTDIR
+}
