@@ -17,6 +17,7 @@ build()
 package()
 {
 	make install DESTDIR=$DESTDIR
+	sed -i "s/copy_exec \/bin\/mount \/bin/copy_exec \/usr\/bin\/mount \/bin/g" $DESTDIR/usr/share/initramfs-tools/hooks/live
 }
 
 
