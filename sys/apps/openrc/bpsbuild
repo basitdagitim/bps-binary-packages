@@ -15,6 +15,7 @@ setup(){
     meson setup $BUILDDIR \
         --sysconfdir=/etc \
         --prefix=/ \
+        --libdir=/lib \
         -Ddefault_library=both \
         -Dzsh-completions=true \
         -Dbash-completions=true \
