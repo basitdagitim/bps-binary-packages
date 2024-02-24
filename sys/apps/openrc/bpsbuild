@@ -13,6 +13,7 @@ setup(){
 	cp ${dizin}/${paket}/extras/* /tmp/bps/build/extras/
 	cd $SOURCEDIR
     meson setup $BUILDDIR \
+    	--bindir=/usr/sbin \
         --sysconfdir=/etc \
         --prefix=/ \
         -Ddefault_library=both \
@@ -23,7 +24,7 @@ setup(){
 }
 
 build(){
-    ninja -C build
+    ninja -C $BUILDDIR
 }
 
 package(){
