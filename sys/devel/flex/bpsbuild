@@ -2,9 +2,9 @@
 name="flex"
 version="2.6.4"
 description="A tool for generating text-scanning programs"
-depends=()
-group=(sys.devel)
-source=("https://github.com/westes/flex/archive/refs/tags/v$version.tar.gz")
+depends=""
+group="sys.devel"
+source="https://github.com/westes/flex/archive/refs/tags/v$version.tar.gz"
 
 export PATH=$PATH:$HOME
 

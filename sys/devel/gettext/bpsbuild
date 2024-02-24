@@ -2,11 +2,10 @@
 name="gettext"
 version="0.22"
 description="GNU locale utilities"
-source=("https://ftp.gnu.org/gnu/gettext/gettext-${version}.tar.xz")
+source="https://ftp.gnu.org/gnu/gettext/gettext-${version}.tar.xz"
 depends="libunistring"
-group=(sys.devel)
-bzip2_depends=(bzip2)
-lzma_depends=(xz-utils)
+group="sys.devel"
+
 
 
 setup(){

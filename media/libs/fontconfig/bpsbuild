@@ -3,7 +3,7 @@ name="fontconfig"
 version="2.15.0"
 description="Fontconfig is a library for configuring and customizing font access."
 source="https://www.freedesktop.org/software/fontconfig/release/fontconfig-$version.tar.gz"
-depends="freetype expat"
+depends="freetype,expat"
 group="media.libs"
 
 

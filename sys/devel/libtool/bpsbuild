@@ -2,9 +2,9 @@
 name="libtool"
 version="2.4.6"
 description="GNU Libtool - The GNU Portable Library Tool"
-source=("https://ftpmirror.gnu.org/libtool/libtool-$version.tar.gz")
-depends=("sed,grep")
-group=(sys.devel)
+source="https://ftpmirror.gnu.org/libtool/libtool-$version.tar.gz"
+depends="sed,grep"
+group="sys.devel"
 
 
 setup(){
