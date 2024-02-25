@@ -3,6 +3,7 @@
 BLUE=$'\e[0;34m'
 GREEN=$'\e[0;32m'
 RED=$'\e[0;31m'
+CHYAN=$'\e[0;35m'
 NC=$'\e[0m'
 
 
@@ -499,7 +500,7 @@ bps_remove()
 {
 paket="$1"
 target="$2"
-
+if [ "$paket" == "base-file" ]; then echo "${CHYAN} ${paket} Paketi Sistemin Temel Paketidir. Silinemez. ${NC}"; return; fi
 #------------------------------------------------------------------
 IFS='|' read -r -a array <<< $(bps_find_package_detail $paket $target)
 name=${array[0]}
