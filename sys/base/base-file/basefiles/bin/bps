@@ -407,7 +407,7 @@ reinstall="$3"
 #reinstall=1 install/reinstall=0 no install
 address=${array[4]}
 #------------------------------------------------------------------
-IFS='|' read -r -a array <<< $(bps_find_package_detail $1 $target)
+IFS='|' read -r -a array <<< $(bps_find_package_detail $paket $target)
 name=${array[0]}
 version=${array[1]}
 depends=${array[2]}
@@ -417,7 +417,10 @@ address=${array[4]}
 
 #------------------------------------------------------------------
 echo "Kurulacak Paketler: $depends"
+# paketin kendisi kuruluyor
+pakage_install "$paket" "$target" "$reinstall"
 
+# paketin bağımlılıkları kuruluyor
 IFS=',' read -r -a packagearray <<< $depends
 for itempaketname in "${packagearray[@]}"
 do
