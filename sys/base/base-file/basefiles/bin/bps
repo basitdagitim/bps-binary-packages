@@ -399,6 +399,36 @@ done
 
 }
 
+bps_package_depends_install()
+{
+paket="$1"
+target="$2"
+reinstall="$3"
+#reinstall=1 install/reinstall=0 no install
+address=${array[4]}
+#------------------------------------------------------------------
+IFS='|' read -r -a array <<< $(bps_find_package_detail $1 $target)
+name=${array[0]}
+version=${array[1]}
+depends=${array[2]}
+filepath=${array[3]}
+address=${array[4]}
+#echo "Bağımlılıkları: $depends"
+
+#------------------------------------------------------------------
+echo "Kurulacak Paketler: $depends"
+
+IFS=',' read -r -a packagearray <<< $depends
+for itempaketname in "${packagearray[@]}"
+do
+#echo "$itempaketname"
+#continue
+pakage_install "$itempaketname" "$target" "$reinstall"
+done
+
+
+}
+
 #*********************************bps_packegeinstall*****************************************
 
 bps_packegefileinstall()
@@ -518,6 +548,10 @@ for arg in $@ ; do
  
     elif [[ "$arg" == "--packeinstall" || "$arg" == "-pi" ]] ; then
         bps_packegefileinstall $2 $3
+    
+    elif [[ "$arg" == "--packeinstalldepends" || "$arg" == "-pdi" ]] ; then
+        bps_package_depends_install $2 "/" "0"
+ 
     elif [[ "$arg" == "--remove" || "$arg" == "-r" ]] ; then
         	if [ -n "${3}" ]
 			then
