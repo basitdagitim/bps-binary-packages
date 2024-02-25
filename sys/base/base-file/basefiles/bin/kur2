@@ -85,6 +85,9 @@ echo "linux /vmlinuz-$(uname -r) init=/sbin/openrc-init root=UUID=${bid} rw quie
 echo "initrd /initrd.img-$(uname -r)">>/hedef/boot/grub/grub.cfg
 echo "boot">>/hedef/boot/grub/grub.cfg
 
+echo root:x:0:0:root:/root:/bin/sh > /hedef/etc/passwd 
+chroot /hedef chmod 755 /etc/passwd 
+  
 chroot /hedef adduser -D -s /bin/sh by -h /home/by
 chroot /hedef echo -e "1\n1\n"|chroot /hedef passwd by
 chroot /hedef echo -e "1\n1\n"|chroot /hedef passwd root
