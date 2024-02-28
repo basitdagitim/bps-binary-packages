@@ -98,6 +98,7 @@ if [ ! -d ${paket} ]; then echo "Bir paket değil!"; exit; fi
 
 echo "Paket : $paket"
 source ${paket}/bpsbuild
+PACKAGEDIR=$target/${dizin}/${paket}
 DESTDIR=$target/tmp/bps/build/rootfs-${name}-${version}
 SOURCEDIR=$target/tmp/bps/build/${name}-${version}
 BUILDDIR=$target/tmp/bps/build/build-${name}-${version}
@@ -111,6 +112,10 @@ echo "******************** build **********************"; build #bpsbuild dosyas
 echo "******************** package ********************"; package #bpsbuild dosyasından gelen fonksiyon
 echo "******************** packageindex****************"; packageindex $target #bu dosya içindeki fonksiyon
 echo "*******************packagecompress***************"; packagecompress $target #bu dosya içindeki fonksiyon
+echo " PACKAGEDIR: ${GREEN} $PACKAGEDIR ${NC}"
+echo " DESTDIR: ${GREEN} $DESTDIR ${NC}"
+echo " SOURCEDIR: ${GREEN} $SOURCEDIR ${NC}"
+echo " BUILDDIR: ${GREEN} $BUILDDIR ${NC}"
 
 }
 

@@ -8,8 +8,8 @@ depends="zlib,libcrypt,openssl,libmd,libssh"
 group="net.misc"
 
 setup(){
-	cp -prfv $dizin/$name/sshd.initd $BUILDDIR/
-	cp -prfv $dizin/$name/sshd.confd $BUILDDIR/
+	cp -prfv $dizin/$paket/sshd.initd $BUILDDIR/
+	cp -prfv $dizin/$paket/sshd.confd $BUILDDIR/
 	cd $BUILDDIR
     ../${name}-${version}/configure --prefix=/usr \
         --libdir=/usr/lib64/ \

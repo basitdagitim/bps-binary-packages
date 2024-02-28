@@ -16,7 +16,7 @@ build()
 package()
 {
 
-	cp -prfv $dizin/$paket/basefiles/*  ${DESTDIR}/
+	cp -prfv $PACKAGEDIR/basefiles/*  ${DESTDIR}/
 }
 
 
