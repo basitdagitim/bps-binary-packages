@@ -45,6 +45,8 @@ initsetup()
 	mkdir -p build-${name}-${version}
 	mkdir -p rootfs-${name}-${version}
 	cp ${dizin}/${paket}/bpsbuild $(realpath ${target})/tmp/bps/build/bpsbuild
+	cp ${dizin}/${paket}/postinstall $(realpath ${target})/tmp/bps/build/postinstall
+	cp ${dizin}/${paket}/postremove $(realpath ${target})/tmp/bps/build/postremove
 	cd build-${name}-${version} 
 }
 
@@ -69,7 +71,14 @@ cd $target/tmp/bps/build/rootfs-${name}-${version}
 tar -cf ../rootfs.tar ./*
 cd $target/tmp/bps/build/
 xz -9 rootfs.tar
-tar -cvzf paket-${name}-${version}.tar.gz rootfs.tar.xz file.index bpsbuild
+#------------------------------------------postinstall-----------------------------------------------
+if [ ! -f "postinstall" ]; then
+	echo "echo ''">postinstall
+fi
+if [ ! -f "postremove" ]; then
+	echo "echo ''">postremove
+fi
+tar -cvzf paket-${name}-${version}.tar.gz rootfs.tar.xz file.index bpsbuild postinstall postremove
 cp paket-${name}-${version}.tar.gz ${dizin}/${paket}/${name}-${version}.bps
 }
 
@@ -213,6 +222,10 @@ $target/bin/busybox sed -i "/name=\"${name}\"/d" $target/var/lib/bps/index.lst
 echo "name=\"${name}\":"version=\"${version}\":"depends=\"${depends}\"">>$target/var/lib/bps/index.lst
 #paket içinde gelen paket dosyalarının dosya ve dizin yapısını tutan file index dosyanının /var/bps/ konumuna kopyalanması
 $target/bin/busybox cp $target/tmp/bps/kur/file.index $target/var/lib/bps/${name}-${version}.lst
+
+$target/bin/busybox cp $target/tmp/bps/kur/postinstall $target/var/lib/bps/${name}-${version}-postinstall
+$target/bin/busybox cp $target/tmp/bps/kur/postremove $target/var/lib/bps/${name}-${version}-postremove
+
 # ----------------------------------------------------------------------------------------------------
 # ----------------------------kullanıcı ve haklar ayarlanıyor ----------------------------------------
 if [ -f "$target/var/lib/bps/${name}-${version}.lst" ]; then
@@ -233,6 +246,13 @@ if [ -f "$target/var/lib/bps/${name}-${version}.lst" ]; then
 		fi
 	done
 fi
+
+#----------------------------------------------------------------------------------------------------
+if [ -f "$target/var/lib/bps/${name}-${version}-postinstall" ]; then
+	$target/var/lib/bps/${name}-${version}-postinstall
+fi
+
+
 # ----------------------------------------------------------------------------------------------------
 # ----------------------------------------------------------------------------------------------------r
 # sistem guncelleniyor
@@ -335,6 +355,13 @@ $target/bin/busybox sed -i "/name=\"${paket}\"/d" $target/var/lib/bps/index.lst
 # sistem guncelleniyor
 $target/sbin/ldconfig
 echo "********** ${paket}-${version}  Paketi Kaldırıldı **********"
+# ------------------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------------------
+if [ -f "$target/var/lib/bps/${name}-${version}-postremove" ]; then
+	$target/var/lib/bps/${name}-${version}-postremove
+fi
+# ------------------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------------------
 sync
 }
 
