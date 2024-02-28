@@ -28,7 +28,11 @@ build(){
 
 package(){
 cd $BUILDDIR
-    make install DESTDIR=$DESTDIR 
+    make install DESTDIR=$DESTDIR
+    mkdir -p "$DESTDIR"/etc/{passwd,group,sysconf,init,conf}.d
+    echo "nobody:!:183:" > "$DESTDIR"/etc/group.d/sshd
+    echo "nobody:!:183:183::/var/empty:/usr/sbin/nologin" > "$DESTDIR"/etc/passwd.d/sshd
+
     install -m755 -D sshd.initd "$DESTDIR"/etc/init.d/sshd
     install -m755 -D sshd.confd "$DESTDIR"/etc/conf.d/sshd
 }
