@@ -215,7 +215,7 @@ echo "name=\"${name}\":"version=\"${version}\":"depends=\"${depends}\"">>$target
 $target/bin/busybox cp $target/tmp/bps/kur/file.index $target/var/lib/bps/${name}-${version}.lst
 # ----------------------------------------------------------------------------------------------------
 # ----------------------------kullanıcı ve haklar ayarlanıyor ----------------------------------------
-if [ -f "$target/var/lib/bps/${paket}-${version}.lst" ]; then
+if [ -f "$target/var/lib/bps/${name}-${version}.lst" ]; then
 	# Paketin file.lst dosyası içerisindeki dosyalar, dizinler kaldırılır.
 	cat $target/var/lib/bps/${paket}-${version}.lst | while read dosya ; do
 		if [[ -f "$target/$dosya" ]] ; then 
@@ -226,7 +226,7 @@ if [ -f "$target/var/lib/bps/${paket}-${version}.lst" ]; then
 
 
 
-	cat $target/var/lib/bps/${paket}-${version}.lst  | while read dizin ; do
+	cat $target/var/lib/bps/${name}-${version}.lst  | while read dizin ; do
 		if [[ -d "$target/$dizin" ]] ; then
 			$target/bin/busybox chmod 755 "$target/$dizin" || true
 			$target/bin/busybox chown root:root "$target/$dizin" || true
