@@ -229,14 +229,21 @@ echo "name=\"${name}\":"version=\"${version}\":"depends=\"${depends}\"">>$target
 #paket içinde gelen paket dosyalarının dosya ve dizin yapısını tutan file index dosyanının /var/bps/ konumuna kopyalanması
 $target/bin/busybox cp $target/tmp/bps/kur/file.index $target/var/lib/bps/${name}-${version}.lst
 
-$target/bin/busybox cp $target/tmp/bps/kur/postinstall $target/var/lib/bps/${name}-${version}-postinstall
-$target/bin/busybox cp $target/tmp/bps/kur/postremove $target/var/lib/bps/${name}-${version}-postremove
+if [ -f "$target/tmp/bps/kur/postinstall" ]; then
+	$target/bin/busybox cp $target/tmp/bps/kur/postinstall $target/var/lib/bps/${name}-${version}-postinstall
+fi
+if [ -f "$target/tmp/bps/kur/postremove" ]; then
+	$target/bin/busybox cp $target/tmp/bps/kur/postremove $target/var/lib/bps/${name}-${version}-postremove
+fi
+	
+
+
 
 # ----------------------------------------------------------------------------------------------------
 # ----------------------------kullanıcı ve haklar ayarlanıyor ----------------------------------------
 if [ -f "$target/var/lib/bps/${name}-${version}.lst" ]; then
 	# Paketin file.lst dosyası içerisindeki dosyalar, dizinler kaldırılır.
-	cat $target/var/lib/bps/${paket}-${version}.lst | while read dosya ; do
+	cat $target/var/lib/bps/${name}-${version}.lst | while read dosya ; do
 		if [[ -f "$target/$dosya" ]] ; then 
 			$target/bin/busybox chmod 755 "$target/$dosya"; 
 			$target/bin/busybox chown root:root "$target/$dosya"; 
