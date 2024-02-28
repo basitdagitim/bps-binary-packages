@@ -76,7 +76,7 @@ cp paket-${name}-${version}.tar.gz ${dizin}/${paket}/${name}-${version}.bps
 bps_create_package()
 {
 target="";if [ -n "$2}" ];then target="$2"; else target="/";fi
-#if [ ! -f "$target/tmp/index.lst"  ]; then echo "Paket index dosyası bulunamadı!"; bps_update $target/; fi
+#if [ ! -f "$target/etc/bps/index.lst"  ]; then echo "Paket index dosyası bulunamadı!"; bps_update $target/; fi
 paket=$1
 dizin=$(pwd)
 if [ ! -d ${paket} ]; then echo "Bir paket değil!"; exit; fi
@@ -107,7 +107,7 @@ target=""
 if [ -n "${1}" ];then target="$1"; else target="/";fi
 echo "********** ${RED} ${name}-${version} Paket Listesi Güncelleniyor  ${NC} **********"
 mkdir -p $target/etc/bps
-rm -rf $target/tmp/index.lst
+rm -rf $target/etc/bps/index.lst
 rm -rf $target/tmp/temp.lst
 while IFS= read -r adres
 do
@@ -121,14 +121,15 @@ if [ ! -f "$target/tmp/temp.lst"  ]; then echo "Paket adresleri hatalı /etc/bps
 
 	while IFS= read -r liste
 	do
-		echo "${liste}|https://github.com/${adres}/raw/master/">>$target/tmp/index.lst
+		echo "${liste}|https://github.com/${adres}/raw/master/">>$target/etc/bps/index.lst
 	done < $target/tmp/temp.lst
 	
 done < $target/etc/bps/sources.list
     
-#busybox wget -O $target/tmp/index.lst https://basitdagitim.github.io/binary-package/index.lst 1>$target/dev/null 2>$target/dev/null
+#busybox wget -O $target/etc/bps/index.lst https://basitdagitim.github.io/binary-package/index.lst 1>$target/dev/null 2>$target/dev/null
 
 echo "********** ${GREEN} ${name}-${version} Paket Listesi Güncellendi  ${NC} **********"
+sync
 }
 
 #************************************bps_find_package_detail**************************************
@@ -139,7 +140,7 @@ target="$2"
 
 paketname="name=\"${paket}\""
 #echo "$paket"
-indexpaket=$(cat $target/tmp/index.lst|grep $paketname)
+indexpaket=$(cat $target/etc/bps/index.lst|grep $paketname)
 name=""
 version=""
 depends=""
@@ -212,6 +213,28 @@ $target/bin/busybox sed -i "/name=\"${name}\"/d" $target/var/lib/bps/index.lst
 echo "name=\"${name}\":"version=\"${version}\":"depends=\"${depends}\"">>$target/var/lib/bps/index.lst
 #paket içinde gelen paket dosyalarının dosya ve dizin yapısını tutan file index dosyanının /var/bps/ konumuna kopyalanması
 $target/bin/busybox cp $target/tmp/bps/kur/file.index $target/var/lib/bps/${name}-${version}.lst
+# ----------------------------------------------------------------------------------------------------
+# ----------------------------kullanıcı ve haklar ayarlanıyor ----------------------------------------
+if [ -f "$target/var/lib/bps/${paket}-${version}.lst" ]; then
+	# Paketin file.lst dosyası içerisindeki dosyalar, dizinler kaldırılır.
+	cat $target/var/lib/bps/${paket}-${version}.lst | while read dosya ; do
+		if [[ -f "$target/$dosya" ]] ; then 
+			$target/bin/busybox chmod 755 "$target/$dosya"; 
+			$target/bin/busybox chown root:root "$target/$dosya"; 
+		fi
+	done
+
+
+
+	cat $target/var/lib/bps/${paket}-${version}.lst  | while read dizin ; do
+		if [[ -d "$target/$dizin" ]] ; then
+			$target/bin/busybox chmod 755 "$target/$dizin" || true
+			$target/bin/busybox chown root:root "$target/$dizin" || true
+		fi
+	done
+fi
+# ----------------------------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------r
 # sistem guncelleniyor
 $target/sbin/ldconfig -r $target
 echo "********** $name Paketi Kuruldu **********"
@@ -231,7 +254,7 @@ for itempaketname in "${array[@]}"
 do
 
 paketname="name=\"${itempaketname}\""
-depens_paketname=$(/bin/busybox cat "${target}/tmp/index.lst"|grep "${paketname}")
+depens_paketname=$(/bin/busybox cat "${target}/etc/bps/index.lst"|grep "${paketname}")
 depends=""
 if [ -n "${depens_paketname}" ]
 then
@@ -324,7 +347,7 @@ IFS=',' read -r -a array <<< "$1"
 for itempaketname in "${array[@]}"
 do
 paketname="name=\"${itempaketname}\""
-depens_paketname=$(cat $target/tmp/index.lst|grep $paketname)
+depens_paketname=$(cat $target/etc/bps/index.lst|grep $paketname)
 depends=""
 if [ -n "${depens_paketname}" ]
 then
@@ -345,7 +368,7 @@ fi
 			if [ "${subpaketname1}" != "${subpaketname2}" ]
 			then
 				sub_paketname="name=\"${subpaketname2}\""
-				sub_depens_paketname=$(cat $target/tmp/index.lst|grep $sub_paketname)
+				sub_depens_paketname=$(cat $target/etc/bps/index.lst|grep $sub_paketname)
 				sub_depends=""
 				if [ -n "${depens_paketname}" ]
 				then
@@ -501,6 +524,10 @@ bps_remove()
 paket="$1"
 target="$2"
 if [ "$paket" == "base-file" ]; then echo "${CHYAN} ${paket} Paketi Sistemin Temel Paketidir. Silinemez. ${NC}"; return; fi
+if [ "$paket" == "glibc" ]; then echo "${CHYAN} ${paket} Paketi Sistemin Temel Paketidir. Silinemez. ${NC}"; return; fi
+if [ "$paket" == "readline" ]; then echo "${CHYAN} ${paket} Paketi Sistemin Temel Paketidir. Silinemez. ${NC}"; return; fi
+if [ "$paket" == "ncurses" ]; then echo "${CHYAN} ${paket} Paketi Sistemin Temel Paketidir. Silinemez. ${NC}"; return; fi
+
 #------------------------------------------------------------------
 IFS='|' read -r -a array <<< $(bps_find_package_detail $paket $target)
 name=${array[0]}
