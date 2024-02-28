@@ -46,10 +46,10 @@ initsetup()
 	mkdir -p rootfs-${name}-${version}
 	cp ${dizin}/${paket}/bpsbuild $(realpath ${target})/tmp/bps/build/bpsbuild
 	
-	if [ ! -f "${dizin}/${paket}/postinstall" ]; then
+	if [ -f "${dizin}/${paket}/postinstall" ]; then
 		cp ${dizin}/${paket}/postinstall $(realpath ${target})/tmp/bps/build/postinstall
 	fi
-	if [ ! -f "${dizin}/${paket}/postremove" ]; then
+	if [ -f "${dizin}/${paket}/postremove" ]; then
 		cp ${dizin}/${paket}/postremove $(realpath ${target})/tmp/bps/build/postremove
 	fi
 	
