@@ -45,8 +45,14 @@ initsetup()
 	mkdir -p build-${name}-${version}
 	mkdir -p rootfs-${name}-${version}
 	cp ${dizin}/${paket}/bpsbuild $(realpath ${target})/tmp/bps/build/bpsbuild
-	cp ${dizin}/${paket}/postinstall $(realpath ${target})/tmp/bps/build/postinstall
-	cp ${dizin}/${paket}/postremove $(realpath ${target})/tmp/bps/build/postremove
+	
+	if [ ! -f "${dizin}/${paket}/postinstall" ]; then
+		cp ${dizin}/${paket}/postinstall $(realpath ${target})/tmp/bps/build/postinstall
+	fi
+	if [ ! -f "${dizin}/${paket}/postremove" ]; then
+		cp ${dizin}/${paket}/postremove $(realpath ${target})/tmp/bps/build/postremove
+	fi
+	
 	cd build-${name}-${version} 
 }
 
@@ -249,7 +255,7 @@ fi
 
 #----------------------------------------------------------------------------------------------------
 if [ -f "$target/var/lib/bps/${name}-${version}-postinstall" ]; then
-	$target/var/lib/bps/${name}-${version}-postinstall
+	sh $target/var/lib/bps/${name}-${version}-postinstall
 fi
 
 
@@ -358,7 +364,7 @@ echo "********** ${paket}-${version}  Paketi Kaldırıldı **********"
 # ------------------------------------------------------------------------------------------
 # ------------------------------------------------------------------------------------------
 if [ -f "$target/var/lib/bps/${name}-${version}-postremove" ]; then
-	$target/var/lib/bps/${name}-${version}-postremove
+	sh $target/var/lib/bps/${name}-${version}-postremove
 fi
 # ------------------------------------------------------------------------------------------
 # ------------------------------------------------------------------------------------------
