@@ -1,5 +1,7 @@
 #!/bin/sh
 #set -ex
+mkdir /output -p
+mkdir -p /bpssource
 >index.lst
 find * -type f -name *.bps |
 	    while IFS= read file_name; do
@@ -24,6 +26,15 @@ find * -type f -name *.bps |
 		#echo $(basename $file_name)
 		
 	    done
-
-mkdir /output -p
 cp -rf index.lst /output
+
+# *****************************source files******************************
+cp -prfv ./* /bpssource/
+
+find /bpssource/* -type f -name *.bps |
+	    while IFS= read file_name; do
+		rm -rf "$file_name"
+	    done
+tar -cf /output/bpssourcepackage.tar /bpssource/
+rm -rf /bpssource
+
