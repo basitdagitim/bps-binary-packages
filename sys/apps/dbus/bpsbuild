@@ -6,7 +6,7 @@ source="https://dbus.freedesktop.org/releases/dbus/dbus-$version.tar.xz"
 depends="audit,expat,libcap-ng,elogind,libX11"
 group="sys.apps"
 
-setup(){
+setup55(){
 	mkdir -p /tmp/bps/build/files
 	cp ${dizin}/${paket}/files/* /tmp/bps/build/files/
 	cd $SOURCEDIR
@@ -18,6 +18,23 @@ setup(){
         --with-system-pid-file=/run/dbus/dbus.pid \
         --with-x
 }
+setup()
+{
+		mkdir -p /tmp/bps/build/files
+	cp ${dizin}/${paket}/files/* /tmp/bps/build/files/
+	cd $SOURCEDIR
+	./configure --prefix=/usr \
+        --libdir=/usr/lib64/ \
+            --sysconfdir=/etc                    \
+            --localstatedir=/var                 \
+            --runstatedir=/run                   \
+            --disable-doxygen-docs               \
+            --disable-xml-docs                   \
+            --disable-static                     \
+            --with-systemduserunitdir=no         \
+            --with-systemdsystemunitdir=no       \
+            --with-system-socket=/run/dbus/system_bus_socket
+            }
 
 build(){
     make
