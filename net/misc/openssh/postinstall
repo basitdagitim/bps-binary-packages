@@ -1,3 +1,5 @@
+sed -i "/nobody/d" /etc/group
+sed -i "/nobody/d" /etc/passwd
 chown root:root /var/empty
 echo "nobody:!:183:" >> "$DESTDIR"/etc/group
 echo "nobody:!:183:183::/var/empty:/usr/sbin/nologin" >> "$DESTDIR"/etc/passwd
