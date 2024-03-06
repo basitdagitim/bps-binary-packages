@@ -1,0 +1,4 @@
+chown root:root /var/empty
+echo "messagebus:x:109" >> "$DESTDIR"/etc/group
+echo "messagebus:x:103:109::/nonexistent:/usr/sbin/nologin" >> "$DESTDIR"/etc/passwd
+
