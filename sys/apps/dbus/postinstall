@@ -1,6 +1,4 @@
 sed -i "/messagebus/d" /etc/group
 sed -i "/messagebus/d" /etc/passwd
-chown root:root /var/empty
-echo "messagebus:x:109" >> "$DESTDIR"/etc/group
-echo "messagebus:x:103:109::/nonexistent:/usr/sbin/nologin" >> "$DESTDIR"/etc/passwd
-
+echo "messagebus:x:109" >> /etc/group
+echo "messagebus:x:103:109::/nonexistent:/usr/sbin/nologin" >> /etc/passwd

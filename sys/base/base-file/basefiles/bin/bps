@@ -178,7 +178,7 @@ then
 	version=${versionx:9:-1}
 	depends=${dependsx:9:-1}
 	# Bağımlı olduğu kurulu paket sayısı
-	dependcount=$(cat /var/lib/bps/index.lst |grep $paket|cut -d":" -f3|cut -d"\"" -f2|wc -l)
+	dependcount=$(cat ${target}/var/lib/bps/index.lst |grep $paket|cut -d":" -f3|cut -d"\"" -f2|wc -l)
 else
 	#echo "***********${paket} Paket Bulunamadı**********"
 	return
