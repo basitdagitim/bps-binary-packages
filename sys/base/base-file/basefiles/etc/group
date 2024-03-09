@@ -44,7 +44,6 @@ kvm:x:104:
 render:x:105:
 netdev:x:106:
 uuidd:x:107:
-messagebus:x:108:
 lightdm:x:109:
 polkitd:x:997:
 lpadmin:x:110:
