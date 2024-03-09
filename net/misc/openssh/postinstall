@@ -3,6 +3,6 @@ sed -i "/nobody/d" /etc/passwd
 mkdir /var/empty
 chown root:root /var/empty
 chmod 755 /var/empty
-echo "nobody:!:183:" >> /etc/group
-echo "nobody:!:183:183::/var/empty:/usr/sbin/nologin" >> /etc/passwd
+echo "nobody:!:65534:" >> /etc/group
+echo "nobody:!:65534:65534::/var/empty:/usr/sbin/nologin" >> /etc/passwd
 
