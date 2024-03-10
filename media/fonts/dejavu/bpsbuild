@@ -20,8 +20,8 @@ echo ""
 }
 package(){
     mkdir -p ${DESTDIR}/usr/share/fonts
-    for font in dejavu dejavu-lgc ; do
-        cp -prfv $font-fonts-ttf-$version/ttf ${DESTDIR}/usr/share/fonts/$font
+    for font in dejavu dejavu-fonts-ttf; do
+        cp -prfv $BUILDDIR/$font-$version/ttf ${DESTDIR}/usr/share/fonts/$font
     done
 }
 

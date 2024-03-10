@@ -5,8 +5,8 @@ description="Keyboard management library"
 source="https://gitlab.gnome.org/GNOME/libgnomekbd/-/archive/${version}/libgnomekbd-${version}.tar.gz"
 depends="libxklavier,gtk3,dconf"
 group="gnome.base"
-
-
+#libxklavier
+#libgtk-3-dev
 setup(){
 	cd $SOURCEDIR
     autoreconf -fvi

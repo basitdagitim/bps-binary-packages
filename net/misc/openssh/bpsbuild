@@ -3,7 +3,7 @@ name="openssh"
 version="9.6p1"
 description="OpenBSD ssh server & client"
 source="https://ftp.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-$version.tar.gz"
-depends="zlib,libcrypt,openssl,libmd,libssh"
+depends="zlib,libxcrypt,openssl,libmd,libssh"
         
 group="net.misc"
 
