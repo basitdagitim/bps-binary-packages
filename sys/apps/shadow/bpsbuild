@@ -8,7 +8,7 @@ group="sys.apps"
 
 setup(){
 	mkdir -p /tmp/bps/build/files
-	cp -prvf ${dizin}/${paket}/files/* /tmp/bps/build/files/
+	cp -prvf $PACKAGEDIR/files/ /tmp/bps/build/
 	cd $SOURCEDIR
 	autoreconf -fiv
     ./configure --prefix=/usr \

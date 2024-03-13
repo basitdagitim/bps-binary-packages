@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 version="13.1.0"
 name="gcc"
-depends="glibc,gmp,mpc,mpfr,binutils,libmpc,zlib,linux-headers"
+depends="glibc,gmp,mpc,mpfr,binutils,libmpc,zlib"
 description="DOS filesystem tools - provides mkdosfs, mkfs.msdos, mkfs.vfat"
 source="https://ftp.gnu.org/gnu/gcc/gcc-${version}/gcc-${version}.tar.xz"
 groups="sys.devel"
@@ -43,7 +43,7 @@ setup()
       --disable-nls
     )
     cd $SOURCEDIR
-	 mkdir build
+    mkdir build
     cd build
     ../configure ${options[@]} \
         --libdir=/usr/lib64 \
@@ -54,7 +54,7 @@ setup()
 build()
 {
 	cd $SOURCEDIR/build
-	make -j 2
+	make -j4
 }
 package()
 {
@@ -66,8 +66,20 @@ package()
     	ln -s g++ ${DESTDIR}/usr/bin/cxx
     	cd $DESTDIR
     	#find ./ -iname "*" -exec strip -s {} \;
-    	
-    	  while read -rd '' file; do
+    	 while read -rd '' file; do
+        case "$(file -Sib "$file")" in
+            application/x-executable\;*)     # Binaries
+                strip "$file" ;;
+            application/x-pie-executable\;*) # Relocatable binaries
+                strip "$file" ;;
+        esac
+       
+    done< <(find "./" -type f -iname "*" -print0)
+    	 
+}
+
+yedek(){
+ while read -rd '' file; do
         case "$(file -Sib "$file")" in
             application/x-sharedlib\;*)      # Libraries (.so)
                 strip "$file" ;;
@@ -77,10 +89,7 @@ package()
                 strip "$file" ;;
         esac
        
-    done< <(find "./" -type f -iname "*" -print0)
-    	
-    	
-    	
-}
+    done< <(find "./" -type f -iname "*" -print0)	
 
+}
 
