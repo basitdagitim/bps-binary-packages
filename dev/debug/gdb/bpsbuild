@@ -10,6 +10,7 @@ group="dev.debug"
 setup(){
 cd $SOURCEDIR
     $SOURCEDIR/configure --prefix=/usr \
+    	--enable-static=yes \
         --libdir=/usr/lib64/
 }
 

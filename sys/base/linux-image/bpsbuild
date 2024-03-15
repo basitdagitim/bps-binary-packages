@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-version="6.6.13"
+version="6.1.0-18"
 name="linux-image"
 depends=""
 description="temel dağıtım kernel dosyası ve moduller"
@@ -10,7 +10,7 @@ setup()
 	echo ""
 	# deb dosyası indirilir http://ftp.tr.debian.org/debian/pool/main/l/linux-signed-amd64/
 	cd $SOURCEDIR
-	wget -O image.deb http://ftp.tr.debian.org/debian/pool/main/l/linux-signed-amd64/linux-image-6.6.13-amd64_6.6.13-1_amd64.deb
+	wget -O image.deb http://ftp.tr.debian.org/debian/pool/main/l/linux-signed-amd64/linux-image-6.1.0-18-amd64_6.1.76-1_amd64.deb
 	# ar x indirilen dosya
 	ar x image.deb
 	# tar -xf data.tar.xz
