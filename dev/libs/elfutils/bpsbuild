@@ -11,9 +11,7 @@ setup(){
     ./configure --prefix=/usr \
         --libdir=/usr/lib64 \
 		--enable-shared \
-		--enable-static \
 		--disable-debuginfod \
-		--disable-libdebuginfod \
 		--disable-thread-safety \
 		--disable-valgrind \
 		--disable-nls \
