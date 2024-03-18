@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-version="2.38-6"
-name="libc6-dev"
+version="6.1.0-18"
+name="linux-headers"
 depends=""
 description="temel dağıtım kernel dosyası ve moduller"
 source=""
@@ -8,11 +8,11 @@ groups="sys.base"
 setup()
 {
 	echo ""
-	# deb dosyası indirilir http://ftp.tr.debian.org/debian/pool/main/g/glibc/libc6-dev_2.38-5_amd64.deb
-	#cd $SOURCEDIR
-	wget -O libc.deb http://ftp.tr.debian.org/debian/pool/main/g/glibc/libc6-dev_2.38-6_amd64.deb
+	# deb dosyası indirilir http://ftp.tr.debian.org/debian/pool/main/l/linux/linux-headers-6.1.0-18-amd64_6.1.76-1_amd64.deb
+	cd $SOURCEDIR
+	wget -O image.deb http://ftp.tr.debian.org/debian/pool/main/l/linux/linux-headers-6.1.0-18-amd64_6.1.76-1_amd64.deb
 	# ar x indirilen dosya
-	ar x libc.deb
+	ar x image.deb
 	# tar -xf data.tar.xz
 	tar -xf data.tar.xz
 	# find ./ -iname "*" -exec unxz {} \; komutuyla xz açılır
@@ -27,10 +27,9 @@ build()
 package()
 {
 	cd $BUILDDIR
-	
+	cp -prfv lib  ${DESTDIR}/
 	cp -prfv usr  ${DESTDIR}/
-	find ${DESTDIR}/ -iname "*" -exec unxz {} \;
-	
+
 }
 
 

@@ -35,18 +35,20 @@ cd /tmp/bps/build
    tar -xf llvm-$version.src.tar.xz
   busybox wget   "https://github.com/llvm/llvm-project/releases/download/llvmorg-$version/cmake-$version.src.tar.xz"
     tar -xf cmake-$version.src.tar.xz
+    cd $SOURCEDIR
     mv ../cmake{-$version.src,}
-    mv ../clang-tools-extra-$version.src ../clang-$version.src/tools/extra
-    exit
+    mv ../clang-tools-extra-$version.src ../clang-$version/tools/extra
     mkdir build && cd build
     cmake .. ${cmake_args[@]}
 }
 
 build(){
+    cd $SOURCEDIR
     ninja -C build
 }
 
 package(){
-    ninja -C build install
+    cd $SOURCEDIR
+   DESTDIR=$DESTDIR ninja -C build install
 }
 
