@@ -35,36 +35,37 @@ build(){
 }
 
 package(){
+    mkdir -p "$DESTDIR/usr/lib/"
     cd ../widec
     make $jobs install DESTDIR=$DESTDIR
     cd ../$name-$version
     make $jobs install  DESTDIR=$DESTDIR
 
-    mkdir -p "$DESTDIR/lib64/" "$DESTDIR/usr/lib64/pkgconfig/"
+    mkdir -p "$DESTDIR/lib64/" "$DESTDIR/usr/lib64/pkgconfig/" 
     for lib in ncurses ncurses++ form panel menu; do
-        if ! ls "$DESTDIR/lib64/lib${lib}.so" ; then
+        if [ ! -f "$DESTDIR/lib64/lib${lib}.so" ]; then
             printf "INPUT(-l%sw)\n" "${lib}" > "$DESTDIR/lib64/lib${lib}.so"
         fi
-        if ! ls "$DESTDIR/usr/lib64/pkgconfig/${lib}.pc" ; then
+        if [ ! -f "$DESTDIR/usr/lib64/pkgconfig/${lib}.pc" ]; then
             ln -sv ${lib}w.pc "$DESTDIR/usr/lib64/pkgconfig/${lib}.pc"
         fi
     done
     # some packages look for -lcurses during build
     printf 'INPUT(-lncursesw)\n' > "$DESTDIR/lib64/libcursesw.so"
-    if ! ls "$DESTDIR"/lib64/libcurses.so ; then
+    if [ ! -f "$DESTDIR"/lib64/libcurses.so ]; then
         ln -sv libncurses.so "$DESTDIR/lib64/libcurses.so"
     fi
 
     # tic and ticinfo functionality is built in by default
     # make sure that anything linking against it links against libncursesw.so instead
     for lib in tic tinfo tinfow ticw; do
-        if ! ls "$DESTDIR/lib64/lib${lib}.so" ; then
+        if [ ! -f "$DESTDIR/lib64/lib${lib}.so" ]; then
             printf "INPUT(libncursesw.so.%s)\n" "${so_ver}" > "$DESTDIR/lib64/lib${lib}.so"
-            if ! ls $DESTDIR/lib64/lib${lib}.so.${so_ver} ; then
+            if [ ! -f $DESTDIR/lib64/lib${lib}.so.${so_ver} ]; then
                 ln -sv libncursesw.so.${so_ver} "$DESTDIR/lib64/lib${lib}.so.${so_ver}"
             fi
         fi
-        if ! ls "$DESTDIR/usr/lib64/pkgconfig/${lib}.pc" ; then
+        if [ ! -f "$DESTDIR/usr/lib64/pkgconfig/${lib}.pc" ]; then
             ln -sv ncursesw.pc "$DESTDIR/usr/lib64/pkgconfig/${lib}.pc"
         fi
     done
