@@ -38,3 +38,4 @@ find /bpssource/* -type f -name *.bps |
 tar -cf /output/bpssourcepackage.tar /bpssource/
 rm -rf /bpssource
 
+
