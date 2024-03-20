@@ -13,9 +13,9 @@ setup()
 	cd $SOURCEDIR
 	 autoreconf -fv --install
 	 cd $BUILDDIR
-    ../${name}-${version}/configure --prefix=/ \
+    ../${name}-${version}/configure --prefix=/usr \
         --sysconfdir=/etc \
-        --libdir=/lib \
+        --libdir=/usr/lib64 \
         --disable-zos-remote \
         --disable-listener \
         --disable-systemd \
