@@ -7,8 +7,8 @@ source="https://ftp.gnu.org/pub/gnu/bash/${name}-${version}.tar.gz"
 groups="app.shell"
 setup()
 {
-	../${name}-${version}/configure --prefix=/ \
-        --libdir=/lib \
+	../${name}-${version}/configure --prefix=/usr \
+        --libdir=/lib64 \
         --bindir=/bin \
         --with-curses \
         --enable-readline \

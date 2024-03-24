@@ -7,6 +7,7 @@ source="https://ftp.gnu.org/pub/gnu/readline/${name}-${version}.tar.gz"
 groups="sys.apps"
 
 setup(){
+cp -prvf $PACKAGEDIR/inputrc /tmp/bps/build/
     ../${name}-${version}/configure --prefix=/usr \
         --libdir=/lib64
 }
@@ -17,4 +18,5 @@ build(){
 
 package(){
     make SHLIB_LIBS="-L/tools/lib -lncursesw" DESTDIR="$DESTDIR" install pkgconfigdir="/lib64/pkgconfig"
+    install -Dm644 ../inputrc "$DESTDIR"/etc/inputrc
 }
