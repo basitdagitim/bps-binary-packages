@@ -1,6 +1,6 @@
 sed -i "/nobody/d" /etc/group
 sed -i "/nobody/d" /etc/passwd
-mkdir /var/empty
+mkdir -p /var/empty
 chown root:root /var/empty
 chmod 755 /var/empty
 echo "nobody:!:65534:" >> /etc/group
